@@ -96,4 +96,26 @@ public class StockFragment extends Fragment {
         super.onDetach();
         listener = null;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (recyclerViewState != null) {
+            recyclerView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
+        }
+    }
+
+    public interface OnStockFragmentInteractionListener {
+        void onStockItemInteraction(Stock stock);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt(ARG_COLUMN_COUNT, columnCount);
+        outState.putParcelableArrayList(ARG_STOCKS, new ArrayList<>(stocks));
+        recyclerViewState = recyclerView.getLayoutManager().onSaveInstanceState();
+        outState.putParcelable(ARG_RECYCLER_VIEW_STATE, recyclerViewState);
+        super.onSaveInstanceState(outState);
+    }
 }
