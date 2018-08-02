@@ -8,6 +8,6 @@ import retrofit.http.Query;
 
 public interface StockAPIService {
 
-    @GET("/data/histohour?tsym=USD&limit=1")
+    @GET("/data/generateAvg?tsym=USD&e=Kraken")
     void getStockDataByStockCode(@Query("fsym") String stockCode, Callback<Stock> cb);
 }
