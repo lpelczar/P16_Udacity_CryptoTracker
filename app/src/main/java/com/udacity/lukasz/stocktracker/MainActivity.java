@@ -59,22 +59,24 @@ public class MainActivity extends AppCompatActivity implements
         StockAPIService service = restAdapter.create(StockAPIService.class);
 
         final List<Stock> stocks = new ArrayList<>();
+        for (int i = 0; i < stockCodes.size(); i++) {
 
-        for (String stockCode : stockCodes) {
-            service.getStockDataByStockCode(stockCode, new Callback<Stock>() {
+            final int finalI = i;
+            service.getStockDataByStockCode(stockCodes.get(i), new Callback<Stock>() {
                 @Override
                 public void success(Stock stock, Response response) {
                     stocks.add(stock);
-                    Log.e("MAIN", "STOCKS --->" + stocks);
+                    if (finalI == stockCodes.size() - 1) {
+                        Log.e("STOCKS", stocks.toString());
+                    }
                 }
+
                 @Override
                 public void failure(RetrofitError error) {
                     error.printStackTrace();
                 }
             });
         }
-
-
     }
 
     @Override
