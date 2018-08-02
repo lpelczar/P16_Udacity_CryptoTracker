@@ -2,7 +2,6 @@ package com.udacity.lukasz.stocktracker;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -67,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements
                 public void success(Stock stock, Response response) {
                     stocks.add(stock);
                     if (finalI == stockCodes.size() - 1) {
-                        Log.e("STOCKS", stocks.toString());
+                        startFragment(stocks);
                     }
                 }
 
@@ -76,6 +75,19 @@ public class MainActivity extends AppCompatActivity implements
                     error.printStackTrace();
                 }
             });
+        }
+    }
+
+    private void startFragment(List<Stock> stocks) {
+        if (stockFragment == null) {
+            stockFragment = StockFragment.newInstance(1, stocks);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment, stockFragment)
+                    .commit();
+        } else {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment, stockFragment)
+                    .commit();
         }
     }
 

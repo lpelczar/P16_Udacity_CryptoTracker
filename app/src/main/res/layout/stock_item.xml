@@ -35,13 +35,13 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/stock_close_tv"
+                android:id="@+id/stock_price_tv"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:fontFamily="sans-serif"
-                tools:text="Close: 500 USD"
+                tools:text="Price: 500 USD"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

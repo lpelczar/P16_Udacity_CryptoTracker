@@ -3,7 +3,6 @@ package com.udacity.lukasz.stocktracker.service;
 import com.udacity.lukasz.stocktracker.model.Stock;
 
 
-import io.reactivex.Observable;
 import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Query;
