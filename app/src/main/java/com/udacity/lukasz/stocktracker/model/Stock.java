@@ -3,6 +3,13 @@ package com.udacity.lukasz.stocktracker.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@ToString
+@Getter
+@Setter
 public class Stock implements Parcelable {
 
     private String name;
@@ -18,54 +25,6 @@ public class Stock implements Parcelable {
         this.close = close;
         this.high = high;
         this.low = low;
-        this.open = open;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public double getClose() {
-        return close;
-    }
-
-    public void setClose(double close) {
-        this.close = close;
-    }
-
-    public double getHigh() {
-        return high;
-    }
-
-    public void setHigh(double high) {
-        this.high = high;
-    }
-
-    public double getLow() {
-        return low;
-    }
-
-    public void setLow(double low) {
-        this.low = low;
-    }
-
-    public double getOpen() {
-        return open;
-    }
-
-    public void setOpen(double open) {
         this.open = open;
     }
 
