@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.udacity.lukasz.stocktracker.R;
+import com.udacity.lukasz.stocktracker.fragment.StockFragment;
+import com.udacity.lukasz.stocktracker.fragment.StockFragment.OnStockFragmentInteractionListener;
 import com.udacity.lukasz.stocktracker.model.Stock;
 
 import java.util.List;
