@@ -1,6 +1,9 @@
 package com.udacity.lukasz.stocktracker.model;
 
-public class Stock {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Stock implements Parcelable {
 
     private String name;
     private String time;
@@ -64,5 +67,40 @@ public class Stock {
 
     public void setOpen(double open) {
         this.open = open;
+    }
+
+    //Parcelable
+    public static final Parcelable.Creator<Stock> CREATOR = new Parcelable.Creator<Stock>() {
+        public Stock createFromParcel(Parcel in) {
+            return new Stock(in);
+        }
+
+        public Stock[] newArray(int size) {
+            return new Stock[size];
+        }
+    };
+
+    private Stock(Parcel in){
+        this.name = in.readString();
+        this.time = in.readString();
+        this.close = in.readDouble();
+        this.high = in.readDouble();
+        this.low = in.readDouble();
+        this.open = in.readDouble();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.name);
+        dest.writeString(this.time);
+        dest.writeDouble(this.close);
+        dest.writeDouble(this.high);
+        dest.writeDouble(this.low);
+        dest.writeDouble(this.open);
     }
 }
