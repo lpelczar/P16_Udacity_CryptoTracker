@@ -55,11 +55,13 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.ViewHolder> 
     class ViewHolder extends RecyclerView.ViewHolder {
         final View view;
         final TextView name;
+        final TextView close;
 
         ViewHolder(View view) {
             super(view);
             this.view = view;
             name = view.findViewById(R.id.stock_name_tv);
+            close = view.findViewById(R.id.stock_close_tv);
         }
     }
 
