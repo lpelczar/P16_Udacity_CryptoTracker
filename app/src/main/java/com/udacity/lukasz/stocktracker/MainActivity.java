@@ -1,7 +1,10 @@
 package com.udacity.lukasz.stocktracker;
 
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -42,6 +45,15 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         getStocksFromApi();
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AddStockActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void getStocksFromApi() {
