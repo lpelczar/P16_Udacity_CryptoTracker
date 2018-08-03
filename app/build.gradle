@@ -33,4 +33,5 @@ dependencies {
     implementation 'com.squareup.retrofit:retrofit:1.9.0'
     compileOnly "org.projectlombok:lombok:1.18.2"
     annotationProcessor 'org.projectlombok:lombok:1.18.2'
+    implementation 'com.android.support:design:27.1.1'
 }
