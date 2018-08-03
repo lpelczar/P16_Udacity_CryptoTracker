@@ -1,5 +1,6 @@
 package com.udacity.lukasz.stocktracker.service;
 
+import com.udacity.lukasz.stocktracker.model.Exchange;
 import com.udacity.lukasz.stocktracker.model.Stock;
 
 
@@ -11,4 +12,7 @@ public interface StockAPIService {
 
     @GET("/data/generateAvg?tsym=USD&e=Cryptsy")
     void getStockDataByStockCode(@Query("fsym") String stockCode, Callback<Stock> result);
+
+    @GET("/data/all/exchanges")
+    void getExchange(Callback<Exchange> result);
 }
