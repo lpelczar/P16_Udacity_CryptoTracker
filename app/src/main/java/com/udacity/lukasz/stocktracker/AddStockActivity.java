@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -69,7 +70,7 @@ public class AddStockActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, stockCodes);
         spinner.setAdapter(adapter);
-        
+
         setListenerOnButton(spinner);
     }
 
@@ -91,6 +92,9 @@ public class AddStockActivity extends AppCompatActivity {
                     codes = new Gson().fromJson(codesJson, type);
                     if (!codes.contains(code)) {
                         codes.add(code);
+                    } else {
+                        Toast.makeText(getApplicationContext(),
+                                "Currency is already added!", Toast.LENGTH_LONG).show();
                     }
                 } else {
                     codes = new ArrayList<>();
@@ -102,6 +106,9 @@ public class AddStockActivity extends AppCompatActivity {
                 editor.clear();
                 editor.putString(PREFS_CODES, data);
                 editor.apply();
+
+                Toast.makeText(getApplicationContext(),
+                        code + " is now followed!", Toast.LENGTH_LONG).show();
             }
         });
     }
