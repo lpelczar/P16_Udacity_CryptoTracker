@@ -33,8 +33,6 @@ public class MainActivity extends AppCompatActivity implements
     public static final String ARG_STOCK_FRAGMENT = "stock-fragment";
     private StockFragment stockFragment;
 
-    private List<String> stockCodes = new ArrayList<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements
 
         SharedPreferences prefs = getSharedPreferences(AddStockActivity.PREFS_NAME, MODE_PRIVATE);
         String codes = prefs.getString(AddStockActivity.PREFS_CODES, null);
+        final List<String> stockCodes;
 
         if (codes != null) {
             Type type = new TypeToken<ArrayList<String>>() { }.getType();
@@ -68,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             stockCodes = new ArrayList<>();
         }
-        Log.e("TAG", stockCodes.toString());
 
         Gson gson = new GsonBuilder()
                         .registerTypeAdapter(Stock.class, new StockDeserializer())
@@ -87,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements
         for (int i = 0; i < stockCodes.size(); i++) {
 
             service.getStockDataByStockCode(stockCodes.get(i), new Callback<Stock>() {
-                
+
                 @Override
                 public void success(Stock stock, Response response) {
                     stocks.add(stock);

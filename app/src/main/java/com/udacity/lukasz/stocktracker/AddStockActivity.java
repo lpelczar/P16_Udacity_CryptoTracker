@@ -33,9 +33,6 @@ public class AddStockActivity extends AppCompatActivity {
     public final static String PREFS_NAME = "stock-codes";
     public final static String PREFS_CODES = "codes";
 
-
-    private List<String> stockCodes = new ArrayList<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,14 +64,12 @@ public class AddStockActivity extends AppCompatActivity {
     }
 
     private void fillSpinnerWithData(Exchange exchange) {
-        stockCodes.addAll(exchange.getStockCodes());
-
+        List<String> stockCodes = new ArrayList<>(exchange.getStockCodes());
         Spinner spinner = findViewById(R.id.spinner);
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, stockCodes);
         spinner.setAdapter(adapter);
-
+        
         setListenerOnButton(spinner);
     }
 
@@ -103,12 +98,10 @@ public class AddStockActivity extends AppCompatActivity {
                 }
 
                 String data = new Gson().toJson(codes);
-                Log.e("JSON", data);
                 SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
                 editor.clear();
                 editor.putString(PREFS_CODES, data);
                 editor.apply();
-
             }
         });
     }
