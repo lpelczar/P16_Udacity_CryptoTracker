@@ -1,19 +1,23 @@
 package com.udacity.lukasz.stocktracker;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.udacity.lukasz.stocktracker.fragment.StockFragment;
 import com.udacity.lukasz.stocktracker.model.Stock;
 import com.udacity.lukasz.stocktracker.service.StockAPIService;
 import com.udacity.lukasz.stocktracker.util.StockDeserializer;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,9 +40,6 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        stockCodes.add("BTC");
-        stockCodes.add("ETH");
-
         if (savedInstanceState != null) {
             stockFragment = (StockFragment) getSupportFragmentManager()
                     .getFragment(savedInstanceState, ARG_STOCK_FRAGMENT);
@@ -57,6 +58,17 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void getStocksFromApi() {
+
+        SharedPreferences prefs = getSharedPreferences(AddStockActivity.PREFS_NAME, MODE_PRIVATE);
+        String codes = prefs.getString(AddStockActivity.PREFS_CODES, null);
+
+        if (codes != null) {
+            Type type = new TypeToken<ArrayList<String>>() { }.getType();
+            ArrayList<String> data = new Gson().fromJson(codes, type);
+            stockCodes.addAll(data);
+            Log.e("TAG", codes);
+        }
+
         Gson gson = new GsonBuilder()
                         .registerTypeAdapter(Stock.class, new StockDeserializer())
                         .create();
@@ -114,5 +126,11 @@ public class MainActivity extends AppCompatActivity implements
             getSupportFragmentManager().putFragment(outState, ARG_STOCK_FRAGMENT, stockFragment);
         }
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getStocksFromApi();
     }
 }

@@ -10,7 +10,7 @@ import retrofit.http.Query;
 
 public interface StockAPIService {
 
-    @GET("/data/generateAvg?tsym=USD&e=Cryptsy")
+    @GET("/data/generateAvg?tsym=BTC&e=Cryptsy")
     void getStockDataByStockCode(@Query("fsym") String stockCode, Callback<Stock> result);
 
     @GET("/data/all/exchanges")

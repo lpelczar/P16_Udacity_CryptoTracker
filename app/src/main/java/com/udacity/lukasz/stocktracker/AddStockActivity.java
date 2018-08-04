@@ -1,5 +1,6 @@
 package com.udacity.lukasz.stocktracker;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -25,6 +26,10 @@ import retrofit.converter.GsonConverter;
 
 public class AddStockActivity extends AppCompatActivity {
 
+    public final static String PREFS_NAME = "stock-codes";
+    public final static String PREFS_CODES = "codes";
+
+
     private List<String> stockCodes = new ArrayList<>();
 
     @Override
@@ -33,6 +38,16 @@ public class AddStockActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_stock);
 
         getStockCodesFromApi();
+
+        List<String> codes = new ArrayList<>();
+        codes.add("BTC");
+        codes.add("ETH");
+
+        String data = new Gson().toJson(codes);
+
+        SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putString(PREFS_CODES, data);
+        editor.apply();
     }
 
     private void getStockCodesFromApi() {
