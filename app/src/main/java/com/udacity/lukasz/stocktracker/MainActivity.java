@@ -64,10 +64,11 @@ public class MainActivity extends AppCompatActivity implements
 
         if (codes != null) {
             Type type = new TypeToken<ArrayList<String>>() { }.getType();
-            ArrayList<String> data = new Gson().fromJson(codes, type);
-            stockCodes.addAll(data);
-            Log.e("TAG", codes);
+            stockCodes = new Gson().fromJson(codes, type);
+        } else {
+            stockCodes = new ArrayList<>();
         }
+        Log.e("TAG", stockCodes.toString());
 
         Gson gson = new GsonBuilder()
                         .registerTypeAdapter(Stock.class, new StockDeserializer())
@@ -82,14 +83,15 @@ public class MainActivity extends AppCompatActivity implements
         StockAPIService service = restAdapter.create(StockAPIService.class);
 
         final List<Stock> stocks = new ArrayList<>();
+
         for (int i = 0; i < stockCodes.size(); i++) {
 
-            final int finalI = i;
             service.getStockDataByStockCode(stockCodes.get(i), new Callback<Stock>() {
+                
                 @Override
                 public void success(Stock stock, Response response) {
                     stocks.add(stock);
-                    if (finalI == stockCodes.size() - 1) {
+                    if (stocks.size() == stockCodes.size()) {
                         startFragment(stocks);
                     }
                 }
