@@ -22,6 +22,9 @@ public class Stock implements Parcelable {
     @SerializedName("PRICE")
     private double price;
 
+    @SerializedName("LASTUPDATE")
+    private long lastUpdate;
+
     //Parcelable
     public static final Parcelable.Creator<Stock> CREATOR = new Parcelable.Creator<Stock>() {
         public Stock createFromParcel(Parcel in) {

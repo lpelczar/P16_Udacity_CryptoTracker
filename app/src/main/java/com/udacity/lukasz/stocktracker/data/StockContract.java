@@ -17,6 +17,6 @@ public class StockContract {
         public static final String TABLE_NAME = "stocks";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_PRICE = "price";
-        public static final String COLUMN_LAST_UPDATED = "lastUpdated";
+        public static final String COLUMN_LAST_UPDATE = "lastUpdate";
     }
 }
