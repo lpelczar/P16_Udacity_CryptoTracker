@@ -15,6 +15,7 @@ public class StockContract {
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_STOCKS).build();
 
         public static final String TABLE_NAME = "stocks";
+        public static final String COLUMN_ID = "id";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_PRICE = "price";
         public static final String COLUMN_LAST_UPDATE = "lastUpdate";
