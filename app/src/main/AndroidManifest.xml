@@ -19,6 +19,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddStockActivity" />
+
+        <provider
+            android:name=".data.StockContentProvider"
+            android:authorities="com.udacity.lukasz.stocktracker"
+            android:exported="false"/>
+        
     </application>
 
 </manifest>
