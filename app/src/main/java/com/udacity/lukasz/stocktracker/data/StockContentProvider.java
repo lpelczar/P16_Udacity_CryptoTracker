@@ -91,5 +91,41 @@ public class StockContentProvider extends ContentProvider {
         return retCursor;
     }
 
-    
+    @Override
+    public int delete(@NonNull Uri uri, @Nullable String selection,
+                      @Nullable String[] selectionArgs) {
+
+        final SQLiteDatabase db = stockDbHelper.getWritableDatabase();
+
+        int match = uriMatcher.match(uri);
+        int stocksDeleted;
+
+        switch (match) {
+            case STOCK_WITH_ID:
+                String id = uri.getPathSegments().get(1);
+                stocksDeleted = db.delete(StockEntry.TABLE_NAME, "id=?", new String[]{id});
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        if (stocksDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return stocksDeleted;
+    }
+
+    @Override
+    public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection,
+                      @Nullable String[] selectionArgs) {
+
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Nullable
+    @Override
+    public String getType(@NonNull Uri uri) {
+
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 }
