@@ -4,5 +4,5 @@
     <string name="high">High:</string>
     <string name="low">Low:</string>
     <string name="open">Open:</string>
-    <string name="_24h_volume">24h volume:</string>
+    <string name="_24h_volume">24h vol:</string>
 </resources>

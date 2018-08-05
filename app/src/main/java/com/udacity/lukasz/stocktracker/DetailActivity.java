@@ -46,7 +46,6 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void populateUI() {
-
         TextView price = findViewById(R.id.price_tv);
         TextView high = findViewById(R.id.high_tv);
         TextView low = findViewById(R.id.low_tv);
@@ -55,8 +54,27 @@ public class DetailActivity extends AppCompatActivity {
         TextView change24hPercent = findViewById(R.id.change_percent_tv);
         TextView volume24h = findViewById(R.id.volume_24h_tv);
 
-        price.setText(String.valueOf(stock.getPrice()));
+        price.setText(String.format(Locale.getDefault(), "%.2f", stock.getPrice()));
+        high.setText(String.format(Locale.getDefault(), "%.2f", stock.getHigh()));
+        low.setText(String.format(Locale.getDefault(), "%.2f", stock.getLow()));
+        open.setText(String.format(Locale.getDefault(), "%.2f", stock.getOpen()));
+        change24h.setText(String.format(Locale.getDefault(), "%.2f", stock.getChange24h()));
 
+        if (stock.getChange24h() < 0) {
+            change24h.setTextColor(getResources().getColor(R.color.colorPrimary));
+        } else {
+            change24h.setTextColor(getResources().getColor(R.color.green));
+        }
+
+        change24hPercent.setText(String.format(Locale.getDefault(), "%.2f", stock.getChange24hPercent()));
+
+        if (stock.getChange24hPercent() < 0) {
+            change24hPercent.setTextColor(getResources().getColor(R.color.colorPrimary));
+        } else {
+            change24hPercent.setTextColor(getResources().getColor(R.color.green));
+        }
+
+        volume24h.setText(String.format(Locale.getDefault(), "%.2f", stock.getVolume24h()));
     }
 
     @Override
