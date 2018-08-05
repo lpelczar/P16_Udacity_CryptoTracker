@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddStockActivity" />
+        <activity android:name=".DetailActivity" />
 
         <provider
             android:name=".data.StockContentProvider"

@@ -117,7 +117,9 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onStockItemInteraction(Stock stock) {
-        Toast.makeText(this, "Stock: " + stock, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.ARG_STOCK, stock);
+        startActivity(intent);
     }
 
     @Override
