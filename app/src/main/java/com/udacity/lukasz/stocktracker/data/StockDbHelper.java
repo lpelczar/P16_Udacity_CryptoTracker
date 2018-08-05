@@ -19,8 +19,14 @@ public class StockDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         final String CREATE_TABLE = "CREATE TABLE "  + StockEntry.TABLE_NAME + " (" +
                 StockEntry.COLUMN_ID + " INTEGER PRIMARY KEY, " +
-                StockEntry.COLUMN_NAME + " TEXT UNIQUE, " +
-                StockEntry.COLUMN_PRICE + " INTEGER, " +
+                StockEntry.COLUMN_NAME + " TEXT, " +
+                StockEntry.COLUMN_PRICE + " REAL, " +
+                StockEntry.COLUMN_HIGH + " REAL, " +
+                StockEntry.COLUMN_LOW + " REAL, " +
+                StockEntry.COLUMN_OPEN + " REAL, " +
+                StockEntry.COLUMN_CHANGE_24H + " REAL, " +
+                StockEntry.COLUMN_CHANGE_24H_PERCENT + " REAL, " +
+                StockEntry.COLUMN_VOLUME_24H + " REAL, " +
                 StockEntry.COLUMN_LAST_UPDATE + " INTEGER);";
 
         db.execSQL(CREATE_TABLE);
