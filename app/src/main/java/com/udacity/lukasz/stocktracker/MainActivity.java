@@ -3,8 +3,11 @@ package com.udacity.lukasz.stocktracker;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Movie;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +16,7 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.udacity.lukasz.stocktracker.data.StockContract;
 import com.udacity.lukasz.stocktracker.fragment.StockFragment;
 import com.udacity.lukasz.stocktracker.model.Stock;
 import com.udacity.lukasz.stocktracker.service.StockAPIService;
@@ -28,6 +32,8 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
+
+import static com.udacity.lukasz.stocktracker.data.StockContract.*;
 
 public class MainActivity extends AppCompatActivity implements
         StockFragment.OnStockFragmentInteractionListener  {
@@ -60,10 +66,11 @@ public class MainActivity extends AppCompatActivity implements
     private void getStocksData() {
 
         final List<String> stockCodes = getStockCodesFromSharedPreferences();
-        
+
         if (!isNetworkAvailable()) {
 
             // Get stocks from database
+            getStocksFromDatabase();
 
         } else {
 
@@ -103,6 +110,39 @@ public class MainActivity extends AppCompatActivity implements
                 }
             });
         }
+    }
+
+    private void getStocksFromDatabase() {
+
+        Cursor cursor = getContentResolver().query(
+                StockEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+
+        List<Stock> stocks = new ArrayList<>();
+
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(cursor.getColumnIndex(StockEntry.COLUMN_ID));
+                String name = cursor.getString(cursor.getColumnIndex(StockEntry.COLUMN_NAME));
+                double price = cursor.getDouble(cursor.getColumnIndex(StockEntry.COLUMN_PRICE));
+                double high = cursor.getDouble(cursor.getColumnIndex(StockEntry.COLUMN_HIGH));
+                double low = cursor.getDouble(cursor.getColumnIndex(StockEntry.COLUMN_LOW));
+                double open = cursor.getDouble(cursor.getColumnIndex(StockEntry.COLUMN_OPEN));
+                double change24h = cursor.getDouble(cursor.getColumnIndex(StockEntry.COLUMN_CHANGE_24H));
+                double change24hPercent = cursor.getDouble(cursor.getColumnIndex(StockEntry.COLUMN_CHANGE_24H_PERCENT));
+                double volume24h = cursor.getDouble(cursor.getColumnIndex(StockEntry.COLUMN_VOLUME_24H));
+                long lastUpdate = cursor.getLong(cursor.getColumnIndex(StockEntry.COLUMN_LAST_UPDATE));
+
+                stocks.add(new Stock(id, name, price, high, low, open, change24h,
+                        change24hPercent, volume24h, lastUpdate));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        startFragment(stocks);
     }
 
     private List<String> getStockCodesFromSharedPreferences() {

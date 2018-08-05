@@ -16,6 +16,8 @@ import lombok.ToString;
 @AllArgsConstructor
 public class Stock implements Parcelable {
 
+    private int id;
+
     @SerializedName("FROMSYMBOL")
     private String name;
 
