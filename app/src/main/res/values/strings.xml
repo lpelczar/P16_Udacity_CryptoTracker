@@ -7,4 +7,7 @@
     <string name="_24h_volume">24h vol:</string>
     <string name="add_to_widget">Add to widget</string>
     <string name="unfollow">Unfollow</string>
+    <string name="please_add_stock_from_the_app">Please add stock from the app</string>
+    <string name="widget_starting_image">Widget starting image</string>
+    <string name="widget_stock_name">Widget stock name</string>
 </resources>
