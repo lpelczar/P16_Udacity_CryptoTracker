@@ -1,5 +1,6 @@
 package com.udacity.lukasz.stocktracker;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -7,8 +8,12 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.udacity.lukasz.stocktracker.model.Stock;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -102,9 +107,33 @@ public class DetailActivity extends AppCompatActivity {
         int itemId = item.getItemId();
         switch (itemId) {
             case R.id.add_to_widget:
-                // Widget
+                // TO DO 1: Adding to widget
+                return true;
+            case R.id.unfollow:
+                unfollowStock();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void unfollowStock() {
+        SharedPreferences prefs = getSharedPreferences(AddStockActivity.PREFS_NAME, MODE_PRIVATE);
+        String codesJson = prefs.getString(AddStockActivity.PREFS_CODES, null);
+        ArrayList<String> codes;
+
+        if (codesJson != null) {
+            Type type = new TypeToken<ArrayList<String>>() { }.getType();
+            codes = new Gson().fromJson(codesJson, type);
+            codes.remove(stock.getName());
+            Toast.makeText(getApplicationContext(), "Currency is now unfollowed!", Toast.LENGTH_LONG).show();
+        } else {
+            codes = new ArrayList<>();
+        }
+
+        String data = new Gson().toJson(codes);
+        SharedPreferences.Editor editor = getSharedPreferences(AddStockActivity.PREFS_NAME, MODE_PRIVATE).edit();
+        editor.clear();
+        editor.putString(AddStockActivity.PREFS_CODES, data);
+        editor.apply();
     }
 }
