@@ -18,7 +18,7 @@ import lombok.ToString;
 @ToString
 public class Exchange {
 
-    @SerializedName("Cryptsy")
+    @SerializedName("Kraken")
     private Map<String, String[]> codes;
 
     public List<String> getStockCodes() {
