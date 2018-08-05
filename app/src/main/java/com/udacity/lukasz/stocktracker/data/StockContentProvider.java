@@ -101,6 +101,8 @@ public class StockContentProvider extends ContentProvider {
         int stocksDeleted;
 
         switch (match) {
+            case STOCKS:
+                db.delete(StockEntry.TABLE_NAME, null, null);
             case STOCK_WITH_ID:
                 String id = uri.getPathSegments().get(1);
                 stocksDeleted = db.delete(StockEntry.TABLE_NAME, "id=?", new String[]{id});

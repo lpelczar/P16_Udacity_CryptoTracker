@@ -4,10 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Movie;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,7 +14,6 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.udacity.lukasz.stocktracker.data.StockContract;
 import com.udacity.lukasz.stocktracker.fragment.StockFragment;
 import com.udacity.lukasz.stocktracker.model.Stock;
 import com.udacity.lukasz.stocktracker.service.StockAPIService;
@@ -65,22 +62,20 @@ public class MainActivity extends AppCompatActivity implements
 
     private void getStocksData() {
 
+        if (!isNetworkAvailable()) {
+            getStocksFromDatabase();
+        } else {
+            getStocksFromApi();
+        }
+    }
+
+    private void getStocksFromApi() {
+
         final List<String> stockCodes = getStockCodesFromSharedPreferences();
 
-        if (!isNetworkAvailable()) {
-
-            // Get stocks from database
-            getStocksFromDatabase();
-
-        } else {
-
-            // Download, clear database and save all items there
-
-        }
-
         Gson gson = new GsonBuilder()
-                        .registerTypeAdapter(Stock.class, new StockDeserializer())
-                        .create();
+                .registerTypeAdapter(Stock.class, new StockDeserializer())
+                .create();
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("https://min-api.cryptocompare.com")
@@ -100,16 +95,23 @@ public class MainActivity extends AppCompatActivity implements
                 public void success(Stock stock, Response response) {
                     stocks.add(stock);
                     if (stocks.size() == stockCodes.size()) {
+                        clearDatabase();
+                        saveStocksToDatabase(stocks);
                         startFragment(stocks);
                     }
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    error.printStackTrace();
+                    getStocksFromDatabase();
                 }
             });
         }
+
+    }
+
+    private void clearDatabase() {
+        getContentResolver().delete(StockEntry.CONTENT_URI, null, null);
     }
 
     private void getStocksFromDatabase() {
