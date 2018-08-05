@@ -1,13 +1,14 @@
 package com.udacity.lukasz.stocktracker;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -20,6 +21,7 @@ import com.udacity.lukasz.stocktracker.util.StockDeserializer;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements
                     .getFragment(savedInstanceState, ARG_STOCK_FRAGMENT);
         }
 
-        getStocksFromApi();
+        getStocksData();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -55,17 +57,18 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-    private void getStocksFromApi() {
+    private void getStocksData() {
 
-        SharedPreferences prefs = getSharedPreferences(AddStockActivity.PREFS_NAME, MODE_PRIVATE);
-        String codes = prefs.getString(AddStockActivity.PREFS_CODES, null);
-        final List<String> stockCodes;
+        final List<String> stockCodes = getStockCodesFromSharedPreferences();
+        
+        if (!isNetworkAvailable()) {
 
-        if (codes != null) {
-            Type type = new TypeToken<ArrayList<String>>() { }.getType();
-            stockCodes = new Gson().fromJson(codes, type);
+            // Get stocks from database
+
         } else {
-            stockCodes = new ArrayList<>();
+
+            // Download, clear database and save all items there
+
         }
 
         Gson gson = new GsonBuilder()
@@ -102,6 +105,19 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    private List<String> getStockCodesFromSharedPreferences() {
+        List<String> stockCodes;
+        SharedPreferences prefs = getSharedPreferences(AddStockActivity.PREFS_NAME, MODE_PRIVATE);
+        String codes = prefs.getString(AddStockActivity.PREFS_CODES, null);
+        if (codes != null) {
+            Type type = new TypeToken<ArrayList<String>>() { }.getType();
+            stockCodes = new Gson().fromJson(codes, type);
+        } else {
+            stockCodes = new ArrayList<>();
+        }
+        return stockCodes;
+    }
+
     private void startFragment(List<Stock> stocks) {
         if (stockFragment == null) {
             stockFragment = StockFragment.newInstance(1, stocks);
@@ -135,5 +151,16 @@ public class MainActivity extends AppCompatActivity implements
         super.onRestart();
         finish();
         startActivity(getIntent());
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager manager =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = Objects.requireNonNull(manager).getActiveNetworkInfo();
+        boolean isAvailable = false;
+        if (networkInfo != null && networkInfo.isConnected()) {
+            isAvailable = true;
+        }
+        return isAvailable;
     }
 }
