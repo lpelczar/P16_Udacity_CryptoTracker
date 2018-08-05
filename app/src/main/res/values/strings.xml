@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Stock Tracker</string>
     <string name="follow_stock">Follow stock</string>
+    <string name="high">High:</string>
+    <string name="low">Low:</string>
+    <string name="open">Open:</string>
+    <string name="_24h_volume">24h volume:</string>
 </resources>
