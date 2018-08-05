@@ -118,10 +118,10 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void saveStocksToDatabase(List<Stock> stocks) {
-        
+
         for (Stock stock : stocks) {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(StockEntry.COLUMN_ID, stock.getId());
+
             contentValues.put(StockEntry.COLUMN_NAME, stock.getName());
             contentValues.put(StockEntry.COLUMN_PRICE, stock.getPrice());
             contentValues.put(StockEntry.COLUMN_HIGH, stock.getHigh());

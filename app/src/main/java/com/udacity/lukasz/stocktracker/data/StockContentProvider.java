@@ -98,11 +98,12 @@ public class StockContentProvider extends ContentProvider {
         final SQLiteDatabase db = stockDbHelper.getWritableDatabase();
 
         int match = uriMatcher.match(uri);
-        int stocksDeleted;
+        int stocksDeleted = 0;
 
         switch (match) {
             case STOCKS:
                 db.delete(StockEntry.TABLE_NAME, null, null);
+                break;
             case STOCK_WITH_ID:
                 String id = uri.getPathSegments().get(1);
                 stocksDeleted = db.delete(StockEntry.TABLE_NAME, "id=?", new String[]{id});
