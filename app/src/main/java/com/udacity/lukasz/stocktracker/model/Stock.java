@@ -22,6 +22,24 @@ public class Stock implements Parcelable {
     @SerializedName("PRICE")
     private double price;
 
+    @SerializedName("HIGH24HOUR")
+    private double high;
+
+    @SerializedName("LOW24HOUR")
+    private double low;
+
+    @SerializedName("OPEN24HOUR")
+    private double open;
+
+    @SerializedName("CHANGE24HOUR")
+    private double change24h;
+
+    @SerializedName("CHANGEPCT25HOUR")
+    private double change24hPercent;
+
+    @SerializedName("VOLUME24HOUR")
+    private double volume24h;
+
     @SerializedName("LASTUPDATE")
     private long lastUpdate;
 
@@ -39,6 +57,13 @@ public class Stock implements Parcelable {
     private Stock(Parcel in){
         this.name = in.readString();
         this.price = in.readDouble();
+        this.high = in.readDouble();
+        this.low = in.readDouble();
+        this.open = in.readDouble();
+        this.change24h = in.readDouble();
+        this.change24hPercent = in.readDouble();
+        this.volume24h = in.readDouble();
+        this.lastUpdate = in.readLong();
     }
 
     @Override
@@ -50,5 +75,12 @@ public class Stock implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.name);
         dest.writeDouble(this.price);
+        dest.writeDouble(this.high);
+        dest.writeDouble(this.low);
+        dest.writeDouble(this.open);
+        dest.writeDouble(this.change24h);
+        dest.writeDouble(this.change24hPercent);
+        dest.writeDouble(this.volume24h);
+        dest.writeLong(this.lastUpdate);
     }
 }
