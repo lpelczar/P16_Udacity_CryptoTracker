@@ -1,5 +1,9 @@
 package com.udacity.lukasz.stocktracker;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +15,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.udacity.lukasz.stocktracker.model.Stock;
+import com.udacity.lukasz.stocktracker.widget.StockWidgetProvider;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -107,7 +112,7 @@ public class DetailActivity extends AppCompatActivity {
         int itemId = item.getItemId();
         switch (itemId) {
             case R.id.add_to_widget:
-                // TO DO 1: Adding to widget
+                updateWidget();
                 return true;
             case R.id.unfollow:
                 unfollowStock();
@@ -135,5 +140,18 @@ public class DetailActivity extends AppCompatActivity {
         editor.clear();
         editor.putString(AddStockActivity.PREFS_CODES, data);
         editor.apply();
+    }
+
+    private void updateWidget() {
+        SharedPreferences sharedPreferences = getSharedPreferences(StockWidgetProvider.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        sharedPreferences.edit().putString(StockWidgetProvider.KEY_STOCK, new Gson().toJson(stock)).apply();
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+        ComponentName componentName = new ComponentName(this, StockWidgetProvider.class);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(componentName);
+        Intent intent = new Intent(this, StockWidgetProvider.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+        this.sendBroadcast(intent);
+        Toast.makeText(this, "Added " + stock.getName() + " to Widget.", Toast.LENGTH_SHORT).show();
     }
 }
