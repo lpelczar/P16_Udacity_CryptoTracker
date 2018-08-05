@@ -1,15 +1,18 @@
 package com.udacity.lukasz.stocktracker;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -112,6 +115,25 @@ public class MainActivity extends AppCompatActivity implements
 
     private void clearDatabase() {
         getContentResolver().delete(StockEntry.CONTENT_URI, null, null);
+    }
+
+    private void saveStocksToDatabase(List<Stock> stocks) {
+        
+        for (Stock stock : stocks) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(StockEntry.COLUMN_ID, stock.getId());
+            contentValues.put(StockEntry.COLUMN_NAME, stock.getName());
+            contentValues.put(StockEntry.COLUMN_PRICE, stock.getPrice());
+            contentValues.put(StockEntry.COLUMN_HIGH, stock.getHigh());
+            contentValues.put(StockEntry.COLUMN_LOW, stock.getLow());
+            contentValues.put(StockEntry.COLUMN_OPEN, stock.getOpen());
+            contentValues.put(StockEntry.COLUMN_CHANGE_24H, stock.getChange24h());
+            contentValues.put(StockEntry.COLUMN_CHANGE_24H_PERCENT, stock.getChange24hPercent());
+            contentValues.put(StockEntry.COLUMN_VOLUME_24H, stock.getVolume24h());
+            contentValues.put(StockEntry.COLUMN_LAST_UPDATE, stock.getLastUpdate());
+
+            getContentResolver().insert(StockEntry.CONTENT_URI, contentValues);
+        }
     }
 
     private void getStocksFromDatabase() {
