@@ -28,13 +28,11 @@ public class StockWidgetProvider extends AppWidgetProvider {
         views.setViewVisibility(R.id.widget_starter_text, View.GONE);
         views.setViewVisibility(R.id.widget_starter_image, View.GONE);
 
+        views.setTextViewText(R.id.name_tv, stock.getName());
         views.setTextViewText(R.id.price_tv, String.format(Locale.getDefault(), "%.2f", stock.getPrice()));
         views.setTextViewText(R.id.high_tv, String.format(Locale.getDefault(), "%.2f", stock.getHigh()));
         views.setTextViewText(R.id.low_tv, String.format(Locale.getDefault(), "%.2f", stock.getLow()));
         views.setTextViewText(R.id.open_tv, String.format(Locale.getDefault(), "%.2f", stock.getOpen()));
-        views.setTextViewText(R.id.change24_tv, String.format(Locale.getDefault(), "%.2f", stock.getChange24h()));
-        views.setTextViewText(R.id.change_percent_tv, String.format(Locale.getDefault(), "%.2f", stock.getChange24hPercent()));
-        views.setTextViewText(R.id.volume_24h_tv, String.format(Locale.getDefault(), "%.2f", stock.getVolume24h()));
 
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);

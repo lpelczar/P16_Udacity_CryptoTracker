@@ -26,143 +26,100 @@
         android:src="@drawable/baseline_money_white_24dp"
         android:contentDescription="@string/widget_starting_image" />
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/black">
+
+        <TextView
+            android:id="@+id/name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="24dp"
+            android:textColor="@android:color/white"
+            android:textSize="40sp"
+            tools:text="BTC" />
 
         <TextView
             android:id="@+id/price_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="10dp"
             android:textColor="@android:color/white"
             android:textSize="40sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_below="@id/name_tv"
             tools:text="7002.03" />
 
         <TextView
             android:id="@+id/high_label"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
             android:text="@string/high"
             android:textColor="@android:color/darker_gray"
             android:textSize="20sp"
-            app:layout_constraintStart_toEndOf="@+id/price_tv"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_below="@id/price_tv"/>
 
         <TextView
             android:id="@+id/low_label"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
             android:text="@string/low"
             android:textColor="@android:color/darker_gray"
             android:textSize="20sp"
-            app:layout_constraintStart_toEndOf="@+id/price_tv"
-            app:layout_constraintTop_toBottomOf="@+id/high_label" />
+            android:layout_below="@id/high_label"/>
 
         <TextView
             android:id="@+id/open_label"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
             android:text="@string/open"
             android:textColor="@android:color/darker_gray"
             android:textSize="20sp"
-            app:layout_constraintStart_toEndOf="@+id/price_tv"
-            app:layout_constraintTop_toBottomOf="@id/low_label" />
+            android:layout_below="@id/low_label"/>
 
         <TextView
             android:id="@+id/high_tv"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginStart="14dp"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             tools:text="2322.32"
-            app:layout_constraintStart_toEndOf="@+id/high_label"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_alignTop="@id/high_label"
+            android:layout_toEndOf="@id/high_label"/>
 
         <TextView
             android:id="@+id/low_tv"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:textColor="@android:color/white"
             android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@+id/high_tv"
-            app:layout_constraintTop_toBottomOf="@+id/high_tv"
+            android:layout_marginStart="18dp"
+            android:layout_alignTop="@id/low_label"
+            android:layout_toEndOf="@id/low_label"
             tools:text="2322.32" />
 
         <TextView
             android:id="@+id/open_tv"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:textColor="@android:color/white"
             android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@+id/high_tv"
-            app:layout_constraintTop_toBottomOf="@+id/low_tv"
+            android:layout_marginStart="10dp"
+            android:layout_alignTop="@id/open_label"
+            android:layout_toEndOf="@id/open_label"
             tools:text="2322.32" />
 
-        <TextView
-            android:id="@+id/change24_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="14dp"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/price_tv"
-            tools:text="-23.23" />
-
-        <TextView
-            android:id="@+id/change_percent_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="14dp"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/change24_tv"
-            app:layout_constraintTop_toBottomOf="@+id/price_tv"
-            tools:text="-6.8 %" />
-
-        <TextView
-            android:id="@+id/volume_24h_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/_24h_volume"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/change_percent_tv" />
-
-        <TextView
-            android:id="@+id/volume_24h_tv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
-            app:layout_constraintStart_toEndOf="@+id/volume_24h_label"
-            app:layout_constraintTop_toTopOf="@+id/volume_24h_label"
-            tools:text="2322" />
-
-    </android.support.constraint.ConstraintLayout>
+    </RelativeLayout>
 
 </LinearLayout>
