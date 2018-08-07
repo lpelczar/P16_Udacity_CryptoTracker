@@ -16,6 +16,7 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         android:backgroundTint="@color/colorPrimary"
+        android:contentDescription="@string/add_new_stock"
         android:src="@drawable/baseline_add_white_18dp" />
 
 </FrameLayout>

@@ -55,7 +55,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private void closeOnError() {
         finish();
-        Toast.makeText(this, "Stock not available", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.stock_not_available, Toast.LENGTH_SHORT).show();
     }
 
     private void populateUI() {
@@ -137,7 +137,7 @@ public class DetailActivity extends AppCompatActivity {
             Type type = new TypeToken<ArrayList<String>>() { }.getType();
             codes = new Gson().fromJson(codesJson, type);
             codes.remove(stock.getName());
-            Toast.makeText(getApplicationContext(), "Currency is now unfollowed!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.currency_now_unfollowed, Toast.LENGTH_LONG).show();
         } else {
             codes = new ArrayList<>();
         }
@@ -159,6 +159,7 @@ public class DetailActivity extends AppCompatActivity {
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
         this.sendBroadcast(intent);
-        Toast.makeText(this, "Added " + stock.getName() + " to Widget.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.added) + stock.getName() +
+                getString(R.string.to_widget), Toast.LENGTH_SHORT).show();
     }
 }

@@ -11,4 +11,12 @@
     <string name="widget_starting_image">Widget starting image</string>
     <string name="widget_stock_name">Widget stock name</string>
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="add_new_stock">Add new stock</string>
+    <string name="stock_not_available">Stock not available</string>
+    <string name="currency_already_added">Currency is already added!</string>
+    <string name="you_are_offline">You are offline!</string>
+    <string name="currency_now_unfollowed">Currency is now unfollowed!</string>
+    <string name="added">Added</string>
+    <string name="to_widget">to Widget.</string>
+    <string name="is_now_followed">is now followed!</string>
 </resources>

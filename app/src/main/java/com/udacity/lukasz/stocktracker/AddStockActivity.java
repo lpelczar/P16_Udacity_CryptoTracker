@@ -6,22 +6,16 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.udacity.lukasz.stocktracker.model.Exchange;
-import com.udacity.lukasz.stocktracker.model.Stock;
 import com.udacity.lukasz.stocktracker.service.StockAPIService;
-import com.udacity.lukasz.stocktracker.util.ExchangeDeserializer;
-import com.udacity.lukasz.stocktracker.util.StockDeserializer;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -32,7 +26,6 @@ import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import retrofit.converter.GsonConverter;
 
 public class AddStockActivity extends AppCompatActivity {
 
@@ -108,7 +101,7 @@ public class AddStockActivity extends AppCompatActivity {
                 codes.add(code);
             } else {
                 Toast.makeText(getApplicationContext(),
-                        "Currency is already added!", Toast.LENGTH_LONG).show();
+                        R.string.currency_already_added, Toast.LENGTH_LONG).show();
             }
         } else {
             codes = new ArrayList<>();
@@ -122,12 +115,11 @@ public class AddStockActivity extends AppCompatActivity {
         editor.apply();
 
         Toast.makeText(getApplicationContext(),
-                code + " is now followed!", Toast.LENGTH_LONG).show();
+                code + getString(R.string.is_now_followed), Toast.LENGTH_LONG).show();
     }
 
     private void displayErrorMessage() {
-        Crashlytics.getInstance().crash();
-        Toast.makeText(getApplicationContext(), "You are offline!", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), R.string.you_are_offline, Toast.LENGTH_LONG).show();
     }
 
     private boolean isNetworkAvailable() {
