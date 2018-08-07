@@ -27,7 +27,6 @@ import java.util.Objects;
 public class DetailActivity extends AppCompatActivity {
 
     public static final String ARG_STOCK = "extra-stock";
-
     private Stock stock;
 
     @Override

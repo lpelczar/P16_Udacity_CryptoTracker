@@ -71,9 +71,9 @@ public class AddStockActivity extends AppCompatActivity {
 
     private void fillSpinnerWithData(Exchange exchange) {
         List<String> stockCodes = new ArrayList<>(exchange.getStockCodes());
-        Spinner spinner = findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item, stockCodes);
+        Spinner spinner = findViewById(R.id.spinner);
         spinner.setAdapter(adapter);
 
         setListenerOnButton(spinner);
