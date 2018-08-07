@@ -1,13 +1,9 @@
 package com.udacity.lukasz.stocktracker;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -17,11 +13,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.udacity.lukasz.stocktracker.model.Exchange;
 import com.udacity.lukasz.stocktracker.service.StockAPIService;
+import com.udacity.lukasz.stocktracker.util.InternetCheck;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -87,16 +83,13 @@ public class AddStockActivity extends AppCompatActivity {
     private void setListenerOnButton(final Spinner spinner) {
 
         Button button = findViewById(R.id.follow_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isNetworkAvailable()) {
-                    handleFollowingStock(spinner);
-                } else {
-                    displayErrorMessage();
-                }
+        button.setOnClickListener(v -> new InternetCheck(internet -> {
+            if (internet) {
+                handleFollowingStock(spinner);
+            } else {
+                displayErrorMessage();
             }
-        });
+        }));
     }
 
     private void handleFollowingStock(Spinner spinner) {
@@ -131,17 +124,6 @@ public class AddStockActivity extends AppCompatActivity {
 
     private void displayErrorMessage() {
         Toast.makeText(getApplicationContext(), R.string.you_are_offline, Toast.LENGTH_LONG).show();
-    }
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager manager =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = Objects.requireNonNull(manager).getActiveNetworkInfo();
-        boolean isAvailable = false;
-        if (networkInfo != null && networkInfo.isConnected()) {
-            isAvailable = true;
-        }
-        return isAvailable;
     }
 
     @Override

@@ -18,6 +18,7 @@ import com.google.gson.reflect.TypeToken;
 import com.udacity.lukasz.stocktracker.fragment.StockFragment;
 import com.udacity.lukasz.stocktracker.model.Stock;
 import com.udacity.lukasz.stocktracker.service.StockAPIService;
+import com.udacity.lukasz.stocktracker.util.InternetCheck;
 import com.udacity.lukasz.stocktracker.util.StockDeserializer;
 
 import java.lang.reflect.Type;
@@ -52,22 +53,20 @@ public class MainActivity extends AppCompatActivity implements
         getStocksData();
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), AddStockActivity.class);
-                startActivity(intent);
-            }
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), AddStockActivity.class);
+            startActivity(intent);
         });
     }
 
     private void getStocksData() {
-
-        if (!isNetworkAvailable()) {
-            getStocksFromDatabase();
-        } else {
-            getStocksFromApi();
-        }
+        new InternetCheck(internet -> {
+            if (!internet) {
+                getStocksFromDatabase();
+            } else {
+                getStocksFromApi();
+            }
+        });
     }
 
     private void getStocksFromApi() {
@@ -213,16 +212,5 @@ public class MainActivity extends AppCompatActivity implements
         super.onRestart();
         finish();
         startActivity(getIntent());
-    }
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager manager =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = Objects.requireNonNull(manager).getActiveNetworkInfo();
-        boolean isAvailable = false;
-        if (networkInfo != null && networkInfo.isConnected()) {
-            isAvailable = true;
-        }
-        return isAvailable;
     }
 }

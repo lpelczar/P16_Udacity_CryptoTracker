@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-class InternetCheck extends AsyncTask<Void,Void,Boolean> {
+public class InternetCheck extends AsyncTask<Void,Void,Boolean> {
 
     private Consumer mConsumer;
     public interface Consumer { void accept(Boolean internet); }
