@@ -119,7 +119,7 @@ public class AddStockActivity extends AppCompatActivity {
         editor.apply();
 
         Toast.makeText(getApplicationContext(),
-                code + getString(R.string.is_now_followed), Toast.LENGTH_LONG).show();
+                code + " " + getString(R.string.is_now_followed), Toast.LENGTH_LONG).show();
     }
 
     private void displayErrorMessage() {

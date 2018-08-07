@@ -159,7 +159,7 @@ public class DetailActivity extends AppCompatActivity {
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
         this.sendBroadcast(intent);
-        Toast.makeText(this, getString(R.string.added) + stock.getName() +
+        Toast.makeText(this, getString(R.string.added) + " " + stock.getName() + " " +
                 getString(R.string.to_widget), Toast.LENGTH_SHORT).show();
     }
 }
