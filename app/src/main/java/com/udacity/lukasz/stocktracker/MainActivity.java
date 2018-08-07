@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.udacity.lukasz.stocktracker.fragment.CursorStockFragment;
 import com.udacity.lukasz.stocktracker.fragment.StockFragment;
 import com.udacity.lukasz.stocktracker.model.Stock;
 import com.udacity.lukasz.stocktracker.service.StockAPIService;
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements
         StockFragment.OnStockFragmentInteractionListener  {
 
     public static final String ARG_STOCK_FRAGMENT = "stock-fragment";
-    private StockFragment stockFragment;
+    private Fragment stockFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState != null) {
-            stockFragment = (StockFragment) getSupportFragmentManager()
+            stockFragment = getSupportFragmentManager()
                     .getFragment(savedInstanceState, ARG_STOCK_FRAGMENT);
         }
 
@@ -134,36 +136,16 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void getStocksFromDatabase() {
-
-        Cursor cursor = getContentResolver().query(
-                StockEntry.CONTENT_URI,
-                null,
-                null,
-                null,
-                null);
-
-        List<Stock> stocks = new ArrayList<>();
-
-        if (cursor.moveToFirst()) {
-            do {
-                int id = cursor.getInt(cursor.getColumnIndex(StockEntry.COLUMN_ID));
-                String name = cursor.getString(cursor.getColumnIndex(StockEntry.COLUMN_NAME));
-                double price = cursor.getDouble(cursor.getColumnIndex(StockEntry.COLUMN_PRICE));
-                double high = cursor.getDouble(cursor.getColumnIndex(StockEntry.COLUMN_HIGH));
-                double low = cursor.getDouble(cursor.getColumnIndex(StockEntry.COLUMN_LOW));
-                double open = cursor.getDouble(cursor.getColumnIndex(StockEntry.COLUMN_OPEN));
-                double change24h = cursor.getDouble(cursor.getColumnIndex(StockEntry.COLUMN_CHANGE_24H));
-                double change24hPercent = cursor.getDouble(cursor.getColumnIndex(StockEntry.COLUMN_CHANGE_24H_PERCENT));
-                double volume24h = cursor.getDouble(cursor.getColumnIndex(StockEntry.COLUMN_VOLUME_24H));
-                long lastUpdate = cursor.getLong(cursor.getColumnIndex(StockEntry.COLUMN_LAST_UPDATE));
-
-                stocks.add(new Stock(id, name, price, high, low, open, change24h,
-                        change24hPercent, volume24h, lastUpdate));
-            } while (cursor.moveToNext());
+        if (stockFragment == null) {
+            stockFragment = new CursorStockFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment, stockFragment)
+                    .commit();
+        } else {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment, stockFragment)
+                    .commit();
         }
-        cursor.close();
-
-        startFragment(stocks);
     }
 
     private List<String> getStockCodesFromSharedPreferences() {
