@@ -39,12 +39,9 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.ViewHolder> 
         holder.name.setText(stock.getName());
         holder.price.setText(String.format("Price: %s", stock.getPrice()));
 
-        holder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != listener) {
-                    listener.onStockItemInteraction(stock);
-                }
+        holder.view.setOnClickListener(v -> {
+            if (null != listener) {
+                listener.onStockItemInteraction(stock);
             }
         });
     }
