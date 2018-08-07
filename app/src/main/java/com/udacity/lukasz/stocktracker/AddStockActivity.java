@@ -1,6 +1,9 @@
 package com.udacity.lukasz.stocktracker;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -22,6 +25,7 @@ import com.udacity.lukasz.stocktracker.util.StockDeserializer;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -81,35 +85,57 @@ public class AddStockActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String code = spinner.getSelectedItem().toString();
-                SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-                String codesJson = prefs.getString(PREFS_CODES, null);
-                ArrayList<String> codes;
-
-                if (codesJson != null) {
-                    Type type = new TypeToken<ArrayList<String>>() { }.getType();
-                    codes = new Gson().fromJson(codesJson, type);
-                    if (!codes.contains(code)) {
-                        codes.add(code);
-                    } else {
-                        Toast.makeText(getApplicationContext(),
-                                "Currency is already added!", Toast.LENGTH_LONG).show();
-                    }
+                if (isNetworkAvailable()) {
+                    handleFollowingStock(spinner);
                 } else {
-                    codes = new ArrayList<>();
-                    codes.add(code);
+                    displayErrorMessage();
                 }
-
-                String data = new Gson().toJson(codes);
-                SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
-                editor.clear();
-                editor.putString(PREFS_CODES, data);
-                editor.apply();
-
-                Toast.makeText(getApplicationContext(),
-                        code + " is now followed!", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void handleFollowingStock(Spinner spinner) {
+        String code = spinner.getSelectedItem().toString();
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String codesJson = prefs.getString(PREFS_CODES, null);
+        ArrayList<String> codes;
+
+        if (codesJson != null) {
+            Type type = new TypeToken<ArrayList<String>>() { }.getType();
+            codes = new Gson().fromJson(codesJson, type);
+            if (!codes.contains(code)) {
+                codes.add(code);
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "Currency is already added!", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            codes = new ArrayList<>();
+            codes.add(code);
+        }
+
+        String data = new Gson().toJson(codes);
+        SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
+        editor.clear();
+        editor.putString(PREFS_CODES, data);
+        editor.apply();
+
+        Toast.makeText(getApplicationContext(),
+                code + " is now followed!", Toast.LENGTH_LONG).show();
+    }
+
+    private void displayErrorMessage() {
+        Toast.makeText(getApplicationContext(), "You are offline!", Toast.LENGTH_LONG).show();
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager manager =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = Objects.requireNonNull(manager).getActiveNetworkInfo();
+        boolean isAvailable = false;
+        if (networkInfo != null && networkInfo.isConnected()) {
+            isAvailable = true;
+        }
+        return isAvailable;
     }
 }
