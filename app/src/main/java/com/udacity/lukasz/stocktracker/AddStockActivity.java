@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -125,6 +126,7 @@ public class AddStockActivity extends AppCompatActivity {
     }
 
     private void displayErrorMessage() {
+        Crashlytics.getInstance().crash();
         Toast.makeText(getApplicationContext(), "You are offline!", Toast.LENGTH_LONG).show();
     }
 

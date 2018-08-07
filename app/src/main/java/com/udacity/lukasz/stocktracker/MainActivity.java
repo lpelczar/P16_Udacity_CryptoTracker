@@ -24,6 +24,9 @@ import com.udacity.lukasz.stocktracker.util.StockDeserializer;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
