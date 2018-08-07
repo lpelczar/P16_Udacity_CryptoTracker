@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -32,12 +33,32 @@ public class AddStockActivity extends AppCompatActivity {
     public final static String PREFS_NAME = "stock-codes";
     public final static String PREFS_CODES = "codes";
 
+    private final String ARG_STOCK_CODES = "arg-stock-codes";
+    private final String ARG_SPINNER_POSITION = "arg-spinner-position";
+    private List<String> stockCodes;
+    private Spinner spinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_stock);
 
-        getStockCodesFromApi();
+        spinner = findViewById(R.id.spinner);
+
+        if (savedInstanceState != null) {
+            stockCodes = savedInstanceState.getStringArrayList(ARG_STOCK_CODES);
+            spinner.setSelection(savedInstanceState.getInt(ARG_SPINNER_POSITION));
+            fillSpinnerWithData();
+        } else {
+            getStockCodesFromApi();
+        }
+    }
+
+    private void fillSpinnerWithData() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_dropdown_item, stockCodes);
+        spinner.setAdapter(adapter);
+        setListenerOnButton(spinner);
     }
 
     private void getStockCodesFromApi() {
@@ -52,7 +73,8 @@ public class AddStockActivity extends AppCompatActivity {
         service.getExchange(new Callback<Exchange>() {
             @Override
             public void success(Exchange exchange, Response response) {
-                fillSpinnerWithData(exchange);
+                stockCodes = exchange.getStockCodes();
+                fillSpinnerWithData();
             }
 
             @Override
@@ -62,20 +84,9 @@ public class AddStockActivity extends AppCompatActivity {
         });
     }
 
-    private void fillSpinnerWithData(Exchange exchange) {
-        List<String> stockCodes = new ArrayList<>(exchange.getStockCodes());
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_dropdown_item, stockCodes);
-        Spinner spinner = findViewById(R.id.spinner);
-        spinner.setAdapter(adapter);
-
-        setListenerOnButton(spinner);
-    }
-
     private void setListenerOnButton(final Spinner spinner) {
 
         Button button = findViewById(R.id.follow_button);
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,5 +142,12 @@ public class AddStockActivity extends AppCompatActivity {
             isAvailable = true;
         }
         return isAvailable;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putStringArrayList(ARG_STOCK_CODES, new ArrayList<>(stockCodes));
+        outState.putInt(ARG_SPINNER_POSITION, spinner.getSelectedItemPosition());
+        super.onSaveInstanceState(outState);
     }
 }
