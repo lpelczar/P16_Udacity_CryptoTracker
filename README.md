@@ -3,5 +3,5 @@ Android app that allows us to track selected currencies.
 
 ## Description
 
-Android app that allows to track selected cryptocurrency data made for Android Developer Nanodegree by Udacity. 
+Android app made for Android Developer Nanodegree by Udacity that allows to track selected cryptocurrency data. 
 App caches results in SQLite database and has companion widget.
